@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PizzaHome.DataAccess
 {
-    public class PizzaContext : DbContext
+    public class PizzaDapperContext : DbContext
     {
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -31,7 +31,7 @@ namespace PizzaHome.DataAccess
 
         public DbSet<Category>? Categories { get; set; }
 
-        public DbSet<Product>? Product { get; set; }
+        public DbSet<Product> Product { get; set; }
 
         public DbSet<Shop>? Shops { get; set; }
 

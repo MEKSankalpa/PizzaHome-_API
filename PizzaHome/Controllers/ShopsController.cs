@@ -5,7 +5,7 @@ using PizzaHome.Services.Interfaces;
 
 namespace PizzaHome.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/shops")]
     [ApiController]
     public class ShopsController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace PizzaHome.Controllers
             _service = repository;
         }
 
-        [HttpGet("{id?}")]
+        [HttpGet("{id?}", Name ="GetShopById")]
         public async Task<ActionResult<List<Shop>>> Index(int? id) {
 
             var result = await _service.GetAllShops();
@@ -33,8 +33,8 @@ namespace PizzaHome.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Shop shop) {
 
-            var result = await _service.CreateShop(shop);
-            return Ok(result);
+            var createdShop = await _service.CreateShop(shop);
+            return CreatedAtRoute("GetShopById", new { Id = createdShop.Id}, createdShop);
         }
 
         [HttpPost("{id}")]

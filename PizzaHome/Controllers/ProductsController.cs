@@ -10,7 +10,7 @@ using PizzaHome.Services.Interfaces;
 
 namespace PizzaHome.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -48,8 +48,8 @@ namespace PizzaHome.Controllers
                 return BadRequest();
             }
 
-            var result = _service.PutProduct(id, product);
-            return Ok(result);
+            await _service.UpdateProduct(id, product);
+            return NoContent();
           
         }
 
@@ -59,8 +59,8 @@ namespace PizzaHome.Controllers
         [Route("create")]
         public async Task<ActionResult<Product>> Create(Product product)
         {
-            var result =await _service.PostProduct(product);
-            return Ok(result);
+            var createdProduct =await _service.CreateProduct(product);
+            return CreatedAtRoute("GetCategoryById", new { Id = createdProduct.Id }, createdProduct);
         }
 
         // DELETE: api/Products/5
