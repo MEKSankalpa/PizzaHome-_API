@@ -11,9 +11,11 @@ namespace PizzaHome.Services.Interfaces
     {
         public  Task<IEnumerable<Product>> GetProducts();
 
-        public  Task<Product> PostProduct(Product product);
+        public Task<Product> GetProductById(int id);
 
-        public Task<Product> PutProduct(int id, Product product);
+        public  Task<Product> CreateProduct(Product product);
+
+        public Task UpdateProduct(int id, Product product);
 
         public Task<bool> DeleteProduct(int id);
     }

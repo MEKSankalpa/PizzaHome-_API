@@ -7,6 +7,6 @@
 
         public string ShopLocation { get; set; } = String.Empty;
 
-        public ShopStatus Status { get; set; } // Getting available or not available
+        public ShopStatus Status { get; set; } = ShopStatus.Available;// Getting available or not available
     }
 }

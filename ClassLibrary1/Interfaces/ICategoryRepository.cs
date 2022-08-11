@@ -9,13 +9,17 @@ namespace PizzaHome.Services.Interfaces
 {
     public interface ICategoryRepository
     {
-        public Task<List<Category>> Get();
+        public Task<IEnumerable<Category>> Get();
+
+        public  Task<Category> GetById(int id);
+
 
         public Task<Category> Add(Category category);
-
+        
         public Task UpdateCategory(int id, Category category);
-
+      
         public Task<bool> DeleteCategory(int id);
 
+        
     }
 }
