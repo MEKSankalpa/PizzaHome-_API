@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaHome.Models;
+using PizzaHome.Services.Dtos;
 using PizzaHome.Services.Interfaces;
 
 namespace PizzaHome.Controllers
@@ -11,26 +13,32 @@ namespace PizzaHome.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _service;
+        private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryService service)
+        public CategoryController(ICategoryService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
          
         
         //get all records 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories() {
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAllCategories() {
 
-                return Ok(await _service.Get());
+            var categories = await _service.Get();
+            var mappedCategories = _mapper.Map<List<CategoryDto>>(categories);
+            return Ok(mappedCategories);
+
         }
 
         [HttpGet("id", Name = "GetCategoryById")]
-        public async Task<ActionResult<Category>> GetOneCategory(int id)
+        public async Task<ActionResult<CategoryDto>> GetOneCategory(int id)
         {
-
-            return Ok(await _service.GetById(id));
+            var category = await _service.GetById(id);
+            var mappedCategory = _mapper.Map<CategoryDto>(category);
+            return Ok(mappedCategory);
         }
 
         //Create category
@@ -38,7 +46,8 @@ namespace PizzaHome.Controllers
         public async Task<IActionResult> AddCategory(Category category) {
 
             var createdCategory =  await _service.Add(category);
-            return CreatedAtRoute("GetCategoryById" , new { id = createdCategory.Id },createdCategory );
+            var mappedCategory = _mapper.Map<CategoryDto>(createdCategory);
+            return CreatedAtRoute("GetCategoryById" , new { id = mappedCategory.Id }, mappedCategory);
         }
        
 
