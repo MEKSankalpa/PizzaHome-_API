@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaHome.Models;
+using PizzaHome.Services.Dtos;
 using PizzaHome.Services.Interfaces;
 
 namespace PizzaHome.Controllers
@@ -11,32 +13,37 @@ namespace PizzaHome.Controllers
     {
 
         private IShopService _service;
+        private IMapper _mapper;
 
-        public ShopsController(IShopService service)
+        public ShopsController(IShopService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Shop>>> Index() {
+        public async Task<ActionResult<List<ShopDto>>> Index() {
 
-            var result = await _service.GetAllShops();
-            return Ok(result);
+            var shops = await _service.GetAllShops();
+            var mappedShops = _mapper.Map<List<ShopDto>>(shops);
+            return Ok(mappedShops);
         }
 
         [HttpGet("{id}", Name = "GetShopById")]
-        public async Task<ActionResult<Shop>> IndexById(int id)
+        public async Task<ActionResult<ShopDto>> IndexById(int id)
         {
 
-            var result = await _service.GetShopById(id);
-            return Ok(result);
+            var shop = await _service.GetShopById(id);
+            var maapedShop = _mapper.Map<ShopDto>(shop);
+            return Ok(maapedShop);
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(Shop shop) {
 
             var createdShop = await _service.CreateShop(shop);
-            return CreatedAtRoute("GetShopById", new { Id = createdShop.Id}, createdShop);
+            var mappedshop = _mapper.Map<ShopDto>(createdShop);
+            return CreatedAtRoute("GetShopById", new { Id = mappedshop.Id}, mappedshop);
         }
 
         [HttpPost("{id}")]
