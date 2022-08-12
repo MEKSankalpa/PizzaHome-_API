@@ -14,11 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<PizzaHomeDapperContext>();
+builder.Services.AddSingleton<DbService>();
 
-builder.Services.AddScoped<IShopRepository, ShopService>();
-builder.Services.AddScoped<ICategoryRepository, CategoryService>();
-builder.Services.AddScoped<IProductRepository, ProductService>();
+builder.Services.AddScoped<IShopService, ShopService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

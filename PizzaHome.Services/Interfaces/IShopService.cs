@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PizzaHome.Services.Interfaces
 {
-    public interface IShopRepository
+    public interface IShopService
     {
         public Task<List<Shop>> GetAllShops();
 

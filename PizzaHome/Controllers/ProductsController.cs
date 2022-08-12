@@ -16,9 +16,9 @@ namespace PizzaHome.Controllers
     {
 
 
-        private readonly IProductRepository _service;
+        private readonly IProductService _service;
 
-        public ProductsController(IProductRepository service)
+        public ProductsController(IProductService service)
         {
             _service = service;
         
@@ -26,16 +26,18 @@ namespace PizzaHome.Controllers
 
         
         // GET: api/Products
-        [HttpGet("{id?}")]
+        [HttpGet]
        
-        public async Task<ActionResult<IEnumerable<Product>>> Index(int? id)
+        public async Task<ActionResult<IEnumerable<Product>>> Index()
         {
             var result = await _service.GetProducts();
-            if (id is null)
-            {
-                return Ok(result);
-            }
-            result = result.Where(p => p.Id == id).ToList();
+            return Ok(result);
+        }
+
+        [HttpGet("id")]
+        public async Task<ActionResult<Product>> IndexById(int id)
+        {
+            var result = await _service.GetProductById(id);
             return Ok(result);
         }
 
@@ -60,7 +62,7 @@ namespace PizzaHome.Controllers
         public async Task<ActionResult<Product>> Create(Product product)
         {
             var createdProduct =await _service.CreateProduct(product);
-            return CreatedAtRoute("GetCategoryById", new { Id = createdProduct.Id }, createdProduct);
+            return CreatedAtRoute("GetCategoryById", new { id = createdProduct.Id }, createdProduct);
         }
 
         // DELETE: api/Products/5

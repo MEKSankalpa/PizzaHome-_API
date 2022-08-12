@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace PizzaHome.Services.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductService
     {
+        
         public  Task<IEnumerable<Product>> GetProducts();
 
         public Task<Product> GetProductById(int id);
@@ -17,6 +18,6 @@ namespace PizzaHome.Services.Interfaces
 
         public Task UpdateProduct(int id, Product product);
 
-        public Task<bool> DeleteProduct(int id);
+        public Task<bool> DeleteProduct(int id);  
     }
 }

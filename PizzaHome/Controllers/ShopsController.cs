@@ -10,23 +10,25 @@ namespace PizzaHome.Controllers
     public class ShopsController : ControllerBase
     {
 
-        private IShopRepository _service;
+        private IShopService _service;
 
-        public ShopsController(IShopRepository repository)
+        public ShopsController(IShopService service)
         {
-            _service = repository;
+            _service = service;
         }
 
-        [HttpGet("{id?}", Name ="GetShopById")]
-        public async Task<ActionResult<List<Shop>>> Index(int? id) {
+        [HttpGet]
+        public async Task<ActionResult<List<Shop>>> Index() {
 
             var result = await _service.GetAllShops();
+            return Ok(result);
+        }
 
-            if (id is null) {
-                return Ok(result);
-            }
+        [HttpGet("{id}", Name = "GetShopById")]
+        public async Task<ActionResult<Shop>> IndexById(int id)
+        {
 
-            result = result.Where(s => s.Id == id).ToList();
+            var result = await _service.GetShopById(id);
             return Ok(result);
         }
 

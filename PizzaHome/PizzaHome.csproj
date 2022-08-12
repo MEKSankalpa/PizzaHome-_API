@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\PizzaHome.Services.csproj" />
+    <ProjectReference Include="..\PizzaHome.Services\PizzaHome.Services.csproj" />
   </ItemGroup>
 
 </Project>

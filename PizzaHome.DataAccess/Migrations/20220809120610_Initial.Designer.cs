@@ -10,7 +10,7 @@ using PizzaHome.DataAccess;
 
 namespace PizzaHome.DataAccess.Migrations
 {
-    [DbContext(typeof(PizzaHomeDapperContext))]
+    [DbContext(typeof(DbService))]
     [Migration("20220809120610_Initial")]
     partial class Initial
     {
