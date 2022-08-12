@@ -9,7 +9,7 @@ using PizzaHome.DataAccess;
 
 namespace PizzaHome.DataAccess.Migrations
 {
-    [DbContext(typeof(PizzaHomeDapperContext))]
+    [DbContext(typeof(DbService))]
     partial class PizzaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -10,14 +10,14 @@ namespace PizzaHome.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryRepository _service;
+        private readonly ICategoryService _service;
 
-        public CategoryController(ICategoryRepository repository)
+        public CategoryController(ICategoryService service)
         {
-            _service = repository;
+            _service = service;
         }
 
-
+         
         
         //get all records 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace PizzaHome.Controllers
         public async Task<IActionResult> AddCategory(Category category) {
 
             var createdCategory =  await _service.Add(category);
-            return CreatedAtRoute("GetCategoryById" , new { Id = createdCategory.Id },createdCategory );
+            return CreatedAtRoute("GetCategoryById" , new { id = createdCategory.Id },createdCategory );
         }
        
 
