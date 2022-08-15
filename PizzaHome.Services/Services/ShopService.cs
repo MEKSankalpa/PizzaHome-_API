@@ -33,7 +33,7 @@ namespace PizzaHome.Services.Services
 
         public async Task<Shop> CreateShop(Shop shop) {
 
-            var query = "INSERT INTO public.shops (shopname, addressno, street, city, status ) VALUES (@ShopName, @AddressNo, @Street, @City, @Status)";
+            var query = "INSERT INTO public.shops (shopname, addressno, street, city, status ) VALUES (@ShopName, @AddressNo, @Street, @City, @Status) RETURNING id";
             int id = await _service.CreateAndEdit(query, shop);
             return new Shop
             {

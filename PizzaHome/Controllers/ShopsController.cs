@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaHome.Models;
@@ -7,6 +8,7 @@ using PizzaHome.Services.Interfaces;
 
 namespace PizzaHome.Controllers
 {
+    [Authorize]
     [Route("api/shops")]
     [ApiController]
     public class ShopsController : ControllerBase
