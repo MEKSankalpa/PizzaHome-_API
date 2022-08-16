@@ -1,9 +1,8 @@
-﻿using PizzaHome.Models;
-using PizzaHome.DataAccess;
-using PizzaHome.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Dapper;
+﻿using Dapper;
 using System.Data;
+using PizzaHome.Core.Entities;
+using PizzaHome.Core.Interfaces;
+using PizzaHome.Infrastructure;
 
 namespace PizzaHome.Services.Services
 {
@@ -58,9 +57,11 @@ namespace PizzaHome.Services.Services
          
             var query = "DELETE FROM public.shops WHERE id = @id";
             int Id = await _service.CreateAndEdit(query, new {id});
+
             if (Id == 0) { 
                 return false;
             }
+
             return true;
         }
 

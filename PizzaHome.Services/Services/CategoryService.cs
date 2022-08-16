@@ -1,7 +1,7 @@
 ﻿using Dapper;
-using PizzaHome.DataAccess;
-using PizzaHome.Models;
-using PizzaHome.Services.Interfaces;
+using PizzaHome.Core.Entities;
+using PizzaHome.Core.Interfaces;
+using PizzaHome.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +14,7 @@ namespace PizzaHome.Services.Services
     public class CategoryService : ICategoryService
     {
         private readonly DbService _service;
+        
 
         public CategoryService(DbService service)
         {
