@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
+using PizzaHome.ViewModels.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,10 +17,12 @@ namespace PizzaHome.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
            
         }
 
@@ -40,10 +43,10 @@ namespace PizzaHome.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Create(User user)
+        public async Task<ActionResult<UserDto>> Create(UserDto user)
         {
-
-            var id = await _service.AddUser(user);
+            var mappedUser = _mapper.Map<User>(user);
+            var id = await _service.AddUser(mappedUser);
 
             return CreatedAtRoute("GetUserById", new { Id = id}, user );
         }

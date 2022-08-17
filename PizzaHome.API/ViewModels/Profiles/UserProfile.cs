@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PizzaHome.API.ViewModels.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.ViewModels.Dtos;
 using System;
@@ -15,6 +16,8 @@ namespace PizzaHome.ViewModels.Profiles
         {
             CreateMap<User, UserDto>();
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, LoginDto>();
+            CreateMap<User, LoginDto>().ReverseMap();
         }
     }
 }

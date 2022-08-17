@@ -14,7 +14,6 @@ namespace PizzaHome.Core.Interfaces
         public Task<User> GetUserByName(string name);
         public Task<User> AddUser(User user);
         public  Task UpdateUser(int id, User user);
-        public Task<User> CheckUser(User user);
         public Task<bool> DeleteUser(int id);
 
 
