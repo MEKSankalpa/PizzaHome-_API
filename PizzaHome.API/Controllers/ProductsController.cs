@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using PizzaHome.Core.Interfaces;
 
 namespace PizzaHome.Controllers
 {
+    [Authorize]
     [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase

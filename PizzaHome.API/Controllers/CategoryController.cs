@@ -17,14 +17,13 @@ namespace PizzaHome.Controllers
         private readonly ICategoryService _service;
         private readonly IMapper _mapper;
 
+       
         public CategoryController(ICategoryService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
         }
 
-         
-        
         //get all records 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAllCategories() {
