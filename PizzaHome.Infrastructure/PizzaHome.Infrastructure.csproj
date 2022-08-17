@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PizzaHome.Core\PizzaHome.Core.csproj" />
-    <ProjectReference Include="..\PizzaHome.Models\PizzaHome.Core.csproj" />
   </ItemGroup>
 
 </Project>

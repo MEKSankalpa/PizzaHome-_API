@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using PizzaHome.API.ViewModels.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
 using PizzaHome.ViewModels.Dtos;
@@ -27,10 +28,10 @@ namespace PizzaHome.Controllers
 
 
         [HttpPost("register")]
-        public async Task<ActionResult> UserRegistration(User user)
+        public async Task<ActionResult> UserRegistration(UserDto user)
         {
-
-            await _service.AddUser(user);
+            var mappedUser = _mapper.Map<User>(user);
+            await _service.AddUser(mappedUser);
 
             var accessToken = _authService.GenerateAccessToken(user.UserName);
             var refreshToken = _authService.GenerateRefreshToken(user.UserName);
@@ -40,15 +41,15 @@ namespace PizzaHome.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult> UserAuthentication(UserDto user)
+        public async Task<ActionResult> UserAuthentication(LoginDto user)
         {
             var mappedUser = _mapper.Map<User>(user);
-            var result = await _service.CheckUser(mappedUser);
+            var result = await _service.GetUserByName(mappedUser.UserName);
 
-            if (result is null) return BadRequest();
+            if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) return BadRequest();
            
 
-            var accesstoken = _authService.GenerateAccessToken(user.UserName);
+            var accesstoken  = _authService.GenerateAccessToken(user.UserName);
             var refreshtoken = _authService.GenerateRefreshToken(user.UserName);
 
             return Ok(new { AccessToken = accesstoken, RefreshToken = refreshtoken });

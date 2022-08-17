@@ -21,7 +21,6 @@ namespace PizzaHome.Infrastructure
            
         }
 
-
        public async Task<int> CreateAndEdit(string command, object param)
         {
             int result;

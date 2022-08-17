@@ -40,27 +40,16 @@ namespace PizzaHome.Services.Services
         public async Task<User> GetUserByName(string name)
         {
 
-            var query = "SELECT * FROM public.users WHERE username = @UserName";
+            var query = "SELECT * FROM public.users WHERE username = @name";
             var user = await _service.Get<User>(query, new { name });
 
             return user;
         }
 
-
-        //This will call when it is user trying to login using his username and password
-        public async Task<User> CheckUser(User user)
-        {
-
-            var query = "SELECT * FROM public.users WHERE username = @UserName AND password = @Password";
-            var result = await _service.Get<User>(query, user);
-
-            return result;
-        }
-
-
         public async Task<User> AddUser(User user) {
 
-            var query = "INSERT INTO public.users (username, email, password, role ) VALUES (@UserName, @Email, @Password, @Role) RETURNING id";
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            var query = "INSERT INTO public.users (username, email, password, role ) VALUES (@UserName, @Email, @Password, @Role) returning id";
             var id = await _service.CreateAndEdit(query, user);
 
             return new User {
@@ -75,7 +64,7 @@ namespace PizzaHome.Services.Services
 
         public async Task UpdateUser(int id,User user)
         {
-
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             var query = "UPDATE public.users SET username = @UserName, email = @Email, password = @Password, role = @Role WHERE id = @id";
             await _service.CreateAndEdit(query, user);
 
