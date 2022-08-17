@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,7 @@ using System.Text;
 
 namespace PizzaHome.Controllers
 {
+    
     [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
@@ -27,6 +29,7 @@ namespace PizzaHome.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<List<User>>> index() {
 
             var users = await _service.GetAllUsers();
@@ -34,6 +37,7 @@ namespace PizzaHome.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}", Name = "GetUserById")]
         public async Task<ActionResult<User>> indexById(int id) {
 
@@ -42,6 +46,7 @@ namespace PizzaHome.Controllers
             return Ok(user);    
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<UserDto>> Create(UserDto user)
         {
@@ -51,6 +56,7 @@ namespace PizzaHome.Controllers
             return CreatedAtRoute("GetUserById", new { Id = id}, user );
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User user) {
 
@@ -60,6 +66,7 @@ namespace PizzaHome.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

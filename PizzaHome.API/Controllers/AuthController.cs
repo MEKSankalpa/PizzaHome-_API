@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -9,6 +10,7 @@ using PizzaHome.ViewModels.Dtos;
 
 namespace PizzaHome.Controllers
 {
+    [Authorize]
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -26,31 +28,33 @@ namespace PizzaHome.Controllers
             _mapper = mapper;
         }
 
-
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> UserRegistration(UserDto user)
         {
             var mappedUser = _mapper.Map<User>(user);
             await _service.AddUser(mappedUser);
 
-            var accessToken = _authService.GenerateAccessToken(user.UserName);
-            var refreshToken = _authService.GenerateRefreshToken(user.UserName);
+            var accessToken = _authService.GenerateAccessToken(user.UserName, user.Role);
+            var refreshToken = _authService.GenerateRefreshToken(user.UserName, user.Role);
 
             return Ok(new { AccessToken = accessToken, RefreshToken = refreshToken });
         }
 
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult> UserAuthentication(LoginDto user)
         {
             var mappedUser = _mapper.Map<User>(user);
             var result = await _service.GetUserByName(mappedUser.UserName);
+            var mappedtoUserDto = _mapper.Map<UserDto>(result);
 
             if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) return BadRequest();
            
 
-            var accesstoken  = _authService.GenerateAccessToken(user.UserName);
-            var refreshtoken = _authService.GenerateRefreshToken(user.UserName);
+            var accesstoken  = _authService.GenerateAccessToken(user.UserName, mappedtoUserDto.Role);
+            var refreshtoken = _authService.GenerateRefreshToken(user.UserName, mappedtoUserDto.Role);
 
             return Ok(new { AccessToken = accesstoken, RefreshToken = refreshtoken });
 

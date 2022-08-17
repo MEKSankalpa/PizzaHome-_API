@@ -24,11 +24,12 @@ namespace PizzaHome.Services.Services
     
       
 
-        public  string GenerateAccessToken(string name)
+        public  string GenerateAccessToken(string name, string role)
         {
+           
             var claims = new[] {
                 new Claim("UserName", name),
-                new Claim(JwtRegisteredClaimNames.Sub,"user_id")
+                new Claim(ClaimTypes.Role , role)
             };
 
             var keyBytes = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
@@ -49,11 +50,12 @@ namespace PizzaHome.Services.Services
             return tokenString;
         }
 
-        public string GenerateRefreshToken(string username)
+        public string GenerateRefreshToken(string name, string role)
         {
             var claims = new[] {
-                new Claim("UserName", username),
-               
+                new Claim("UserName", name),
+                new Claim(ClaimTypes.Role , role)
+
             };
 
             var keyBytes = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
@@ -81,13 +83,14 @@ namespace PizzaHome.Services.Services
             }
 
             var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            string user = jwt.Claims.First(c => c.Type == "UserName").Value;
+            string username = jwt.Claims.First(c => c.Type == "UserName").Value;
+            string role = jwt.Claims.First(c => c.Type == ClaimTypes.Role).Value;
 
-            var checkedUser = _service.GetUserByName(user);
+            var checkedUser = _service.GetUserByName(username);
             if (checkedUser is null) { return new { }; }
 
-            var newRefresh = GenerateRefreshToken(user);
-            var newAccess = GenerateAccessToken(user); 
+            var newRefresh = GenerateRefreshToken(username, role);
+            var newAccess = GenerateAccessToken(username, role); 
 
             return new { AcessToken = newAccess, RefreshToken =  newAccess };
 
