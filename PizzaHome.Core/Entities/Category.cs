@@ -8,13 +8,14 @@ namespace PizzaHome.Core.Entities
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [StringLength(10, MinimumLength = 3)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(250)]
+        [StringLength(250, MinimumLength = 10)]
         public string Description { get; set; } = string.Empty;
 
+        [JsonIgnore]
         public List<Product> Products { get; set; } = new List<Product>();
     }
 }

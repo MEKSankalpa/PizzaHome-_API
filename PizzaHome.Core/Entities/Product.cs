@@ -8,17 +8,17 @@ namespace PizzaHome.Core.Entities
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(37)]
-        public string Name { get; set; }
+        [StringLength(10, MinimumLength = 3)]
+        public string Name { get; set; } = string.Empty;
 
 
         [Required]
-        [MaxLength(250)]
-        public string Description { get; set; }
+        [StringLength(250, MinimumLength = 10)]
+        public string Description { get; set; } = string.Empty;
 
 
         [Required]
-        public int Price { get; set; }
+        public int Price { get; set; }  
 
 
         [Required]

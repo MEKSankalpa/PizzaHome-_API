@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using PizzaHome.API.ViewModels.Dtos;
+using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
-using PizzaHome.ViewModels.Dtos;
 
 namespace PizzaHome.Controllers
 {
-    [Authorize]
+    
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -33,6 +32,10 @@ namespace PizzaHome.Controllers
         public async Task<ActionResult> UserRegistration(UserDto user)
         {
             var mappedUser = _mapper.Map<User>(user);
+
+            var userExits = _service.GetUserByName(mappedUser.UserName);
+            if (userExits != null) throw new ApplicationException("User Name Already Exists! Please Enter Another..");  
+
             await _service.AddUser(mappedUser);
 
             var accessToken = _authService.GenerateAccessToken(user.UserName, user.Role);
@@ -50,7 +53,7 @@ namespace PizzaHome.Controllers
             var result = await _service.GetUserByName(mappedUser.UserName);
             var mappedtoUserDto = _mapper.Map<UserDto>(result);
 
-            if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) return BadRequest();
+            if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) throw new ApplicationException("Check Your User Name!");
            
 
             var accesstoken  = _authService.GenerateAccessToken(user.UserName, mappedtoUserDto.Role);
@@ -67,7 +70,7 @@ namespace PizzaHome.Controllers
             var refreshToken = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             var tokens = _authService.RegenerateTokens(refreshToken);
-            if (tokens is null) return BadRequest("Invalid Token!");
+            if (tokens is null) throw new ApplicationException("Token Invalid!");
 
             return Ok(tokens);
 
