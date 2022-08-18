@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PizzaHome.Core.Entities
+namespace PizzaHome.Core.Dtos
 {
-    public class User
+    public class UserDto
     {
         public int Id { get; set; }
 
@@ -17,13 +17,13 @@ namespace PizzaHome.Core.Entities
 
         [Required]
         [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Incorrect Email Format")]
-        public string Email { get; set; } = string.Empty ;
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [StringLength(10, MinimumLength = 5)]
         public string Password { get; set; } = string.Empty;
 
         [Required]
-        public UserRole Role { get; set; } = UserRole.User; // Ither User or Admin
+        public string Role { get; set; } = string.Empty ;
     }
 }

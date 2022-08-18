@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using PizzaHome.API.ViewModels.Dtos;
+using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
-using PizzaHome.ViewModels.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

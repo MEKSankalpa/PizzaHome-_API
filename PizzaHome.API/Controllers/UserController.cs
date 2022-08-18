@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
-using PizzaHome.ViewModels.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -33,15 +33,18 @@ namespace PizzaHome.Controllers
         public async Task<ActionResult<List<User>>> index() {
 
             var users = await _service.GetAllUsers();
+            var mappedUsers = _mapper.Map<List<UserDto>>(users);
 
-            return Ok(users);
+            return Ok(mappedUsers);
         }
 
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet("{id}", Name = "GetUserById")]
         public async Task<ActionResult<User>> indexById(int id) {
 
             var user = await _service.GetUserById(id);
+            if(user is null) throw new KeyNotFoundException("User Not Found!");  
 
             return Ok(user);    
         }

@@ -7,21 +7,23 @@ namespace PizzaHome.Core.Entities
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [StringLength(10, MinimumLength = 3)]
         public string ShopName { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(10, MinimumLength = 3)]
         public string AddressNo { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(10, MinimumLength = 3)]
         public string Street { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(10)]
+        [StringLength(10, MinimumLength = 3)]
         public string City { get; set; } = string.Empty;
 
+        [Required]
+        [Range(0,1)]
         public ShopStatus Status { get; set; } = ShopStatus.Available;// Getting available or not available
     }
 }

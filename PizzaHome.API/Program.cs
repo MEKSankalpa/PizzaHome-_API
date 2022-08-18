@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PizzaHome.API.Middlewares;
 using PizzaHome.Core.Interfaces;
 using PizzaHome.Infrastructure;
 using PizzaHome.Services.Services;
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddControllers();
 
 
@@ -53,8 +55,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
 }
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
