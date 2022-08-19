@@ -38,13 +38,7 @@ namespace PizzaHome.API.Middlewares
 
                     default :
 
-                        if (ex.Message.Contains("Invalid salt version")) {
-
-                            errorResponse.Message = "Incorrect Password!";
-                            response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            break;
-
-                        } else if (ex.Message.Contains("IDX"))
+                         if (ex.Message.Contains("IDX"))
                         {
                             errorResponse.Message = "Invalid Token Provided!";
                             response.StatusCode = (int)HttpStatusCode.BadRequest;

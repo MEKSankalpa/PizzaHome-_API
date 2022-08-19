@@ -64,7 +64,7 @@ namespace PizzaHome.Controllers
        }
 
 
-        
+      [Authorize(Policy = "PizzaHomeManagementPolicy")]  
       [HttpDelete("{id}")]
       public async Task<ActionResult> DeleteCategory(int id) {
 
