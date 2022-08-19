@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using PizzaHome.API.Authorization;
+using PizzaHome.API.Attributes;
 using PizzaHome.API.Middlewares;
 using PizzaHome.Core.Interfaces;
 using PizzaHome.Infrastructure;
@@ -27,7 +27,7 @@ namespace PizzaHome.API.Extensions
                 options.AddPolicy("AdminAndUser", policy => policy.RequireRole("Admin", "User"));
                 options.AddPolicy("PizzaHomeManagementPolicy", policyBuilder =>
                   policyBuilder.AddRequirements(
-                      new PizzaHomeManagementRequirement()
+                      new PizzaHomeManagementPolicy()
 
                 ));
 

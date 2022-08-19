@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PizzaHome.API.Attributes;
 using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
@@ -34,15 +35,18 @@ namespace PizzaHome.Controllers
 
         }
 
-        [HttpGet("id", Name = "GetCategoryById")]
+        
+        [HttpGet("{id}", Name = "GetCategoryById")]
         public async Task<ActionResult<CategoryDto>> GetOneCategory(int id)
         {
             var category = await _service.GetById(id);
+            if (category is null) throw new KeyNotFoundException("Category Not Found!");
             var mappedCategory = _mapper.Map<CategoryDto>(category);
             return Ok(mappedCategory);
         }
 
         //Create category
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         [HttpPost]
         public async Task<IActionResult> AddCategory(Category category) {
 
@@ -52,27 +56,26 @@ namespace PizzaHome.Controllers
         }
        
 
-       [HttpPut("{id}")]
-       public async Task<ActionResult> UpdateCategory(int id, Category category) {
-           if (id != category.Id) {
-               return BadRequest();
-           }
+        [HttpPut("{id}")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
+        public async Task<ActionResult> UpdateCategory(int id, Category category) {
 
+           if (id != category.Id)  throw new ApplicationException("Category Not Found!");
+; 
            await _service.UpdateCategory(id, category);
            return NoContent();
 
        }
 
 
-      [Authorize(Policy = "PizzaHomeManagementPolicy")]  
-      [HttpDelete("{id}")]
-      public async Task<ActionResult> DeleteCategory(int id) {
+     
+        [HttpDelete("{id}")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
+        public async Task<ActionResult> DeleteCategory(int id) {
 
           var res = await  _service.DeleteCategory(id);
-          if (res == false)
-          {
-              return NotFound();
-          }
+          if (res == false) throw new ApplicationException("Category Not Found!"); 
+
           return NoContent();
 
       } 
