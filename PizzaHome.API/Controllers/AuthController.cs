@@ -53,7 +53,7 @@ namespace PizzaHome.Controllers
             var result = await _service.GetUserByName(mappedUser.UserName);
             var mappedtoUserDto = _mapper.Map<UserDto>(result);
 
-            if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) throw new ApplicationException("Check Your User Name!");
+            if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) throw new ApplicationException("Check Your User Name and Password!");
            
 
             var accesstoken  = _authService.GenerateAccessToken(user.UserName, mappedtoUserDto.Role);

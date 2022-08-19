@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using PizzaHome.API.Authorization;
 using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
@@ -29,7 +30,7 @@ namespace PizzaHome.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,User")]
+        [AuthorizeByRole("Admin","User")]
         public async Task<ActionResult<List<User>>> index() {
 
             var users = await _service.GetAllUsers();
@@ -38,8 +39,8 @@ namespace PizzaHome.Controllers
             return Ok(mappedUsers);
         }
 
-        // [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
+        
         [HttpGet("{id}", Name = "GetUserById")]
         public async Task<ActionResult<User>> indexById(int id) {
 

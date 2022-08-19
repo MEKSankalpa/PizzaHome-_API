@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using PizzaHome.API.Authorization;
 using PizzaHome.API.Middlewares;
 using PizzaHome.Core.Interfaces;
 using PizzaHome.Infrastructure;
@@ -11,6 +13,7 @@ namespace PizzaHome.API.Extensions
     {
         public static void CustomServices(this IServiceCollection service) {
 
+
             service.AddSingleton<DbService>();
             service.AddScoped<IShopService, ShopService>();
             service.AddScoped<ICategoryService, CategoryService>();
@@ -18,6 +21,17 @@ namespace PizzaHome.API.Extensions
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IAuthService, AuthService>();
             service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            service.AddTransient<IAuthorizationHandler, PizzaHomeManagementRequirementHandler>();
+            service.AddAuthorization(options => {
+
+                options.AddPolicy("AdminAndUser", policy => policy.RequireRole("Admin", "User"));
+                options.AddPolicy("PizzaHomeManagementPolicy", policyBuilder =>
+                  policyBuilder.AddRequirements(
+                      new PizzaHomeManagementRequirement()
+
+                ));
+
+            });
 
         }
 
