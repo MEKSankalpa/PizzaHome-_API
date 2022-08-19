@@ -40,7 +40,6 @@ namespace PizzaHome.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        
         [HttpGet("{id}", Name = "GetUserById")]
         public async Task<ActionResult<User>> indexById(int id) {
 
@@ -64,7 +63,7 @@ namespace PizzaHome.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User user) {
 
-            if (id != user.Id) return BadRequest();
+            if (id != user.Id) throw new ApplicationException("Shop not Found!");
             await _service.UpdateUser(id,user);
          
             return NoContent();
@@ -75,7 +74,7 @@ namespace PizzaHome.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _service.DeleteUser(id);
-            if (result == false) return BadRequest();
+            if (result == false) throw new ApplicationException("User Not Found!");
 
             return NoContent();
         }

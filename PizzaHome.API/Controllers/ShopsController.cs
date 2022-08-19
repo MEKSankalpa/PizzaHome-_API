@@ -35,11 +35,13 @@ namespace PizzaHome.Controllers
         {
 
             var shop = await _service.GetShopById(id);
+            if(shop is null) throw new KeyNotFoundException("Shop is not Found!");
             var maapedShop = _mapper.Map<ShopDto>(shop);
             return Ok(maapedShop);
         }
 
         [HttpPost]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<ActionResult> Create(Shop shop) {
 
             var createdShop = await _service.CreateShop(shop);
@@ -48,21 +50,21 @@ namespace PizzaHome.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<ActionResult> Update( int id, Shop shop) {
-            if (id != shop.Id)
-            {
-                return BadRequest();
-            }
+
+            if (id != shop.Id) throw new ApplicationException("Shop not Found!");
 
             await _service.UpdateShop(id, shop);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<ActionResult> Delete(int id) {
 
             var res = await _service.DeleteShop(id);
-            if (res == false) return NotFound();
+            if (res == false) throw new ApplicationException("Shop is not Found!");
 
             return NoContent();
         }

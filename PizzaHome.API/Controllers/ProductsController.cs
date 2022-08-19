@@ -29,7 +29,6 @@ namespace PizzaHome.Controllers
         
         // GET: api/Products
         [HttpGet]
-       
         public async Task<ActionResult<IEnumerable<Product>>> Index()
         {
             var result = await _service.GetProducts();
@@ -40,18 +39,16 @@ namespace PizzaHome.Controllers
         public async Task<ActionResult<Product>> IndexById(int id)
         {
             var result = await _service.GetProductById(id);
+            if (result is null) throw new KeyNotFoundException("Product Not Found!");
             return Ok(result);
         }
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<IActionResult> Update(int id, Product product)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
+            if (id != product.Id) throw new ApplicationException("Product Not Found!");
             await _service.UpdateProduct(id, product);
             return NoContent();
           
@@ -60,7 +57,7 @@ namespace PizzaHome.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Route("create")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<ActionResult<Product>> Create(Product product)
         {
             var createdProduct =await _service.CreateProduct(product);
@@ -69,13 +66,11 @@ namespace PizzaHome.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var result = await _service.DeleteProduct(id);
-            if (result == false)
-            {
-                return NotFound();
-            }
+            if (result == false) throw new ApplicationException("Product Not Found!");
 
             return NoContent();
         }

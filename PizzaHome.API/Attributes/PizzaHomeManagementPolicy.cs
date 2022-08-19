@@ -2,14 +2,14 @@
 using PizzaHome.Core.Interfaces;
 using System.Security.Claims;
 
-namespace PizzaHome.API.Authorization
+namespace PizzaHome.API.Attributes
 {
-    public class PizzaHomeManagementRequirement : IAuthorizationRequirement
+    public class PizzaHomeManagementPolicy : IAuthorizationRequirement
     {
 
     }
 
-    public class PizzaHomeManagementRequirementHandler : AuthorizationHandler<PizzaHomeManagementRequirement>
+    public class PizzaHomeManagementRequirementHandler : AuthorizationHandler<PizzaHomeManagementPolicy>
     {
         private readonly IUserService _service;
        
@@ -19,7 +19,7 @@ namespace PizzaHome.API.Authorization
             _service = service;
           
         }
-        protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, PizzaHomeManagementRequirement requirement)
+        protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, PizzaHomeManagementPolicy requirement)
         {
             var username = context.User.FindFirst(c => c.Type == "UserName").Value;
             var user     = await _service.GetUserByName(username);
