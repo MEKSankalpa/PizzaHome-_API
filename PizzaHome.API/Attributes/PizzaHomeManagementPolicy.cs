@@ -11,27 +11,18 @@ namespace PizzaHome.API.Attributes
 
     public class PizzaHomeManagementRequirementHandler : AuthorizationHandler<PizzaHomeManagementPolicy>
     {
-        private readonly IUserService _service;
-       
-
-        public PizzaHomeManagementRequirementHandler(IUserService service)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PizzaHomeManagementPolicy requirement)
         {
-            _service = service;
-          
-        }
-        protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, PizzaHomeManagementPolicy requirement)
-        {
-            var username = context.User.FindFirst(c => c.Type == "UserName").Value;
-            var user     = await _service.GetUserByName(username);
-            var role     = context.User.FindFirst(c => c.Type == ClaimTypes.Role).Value;
+            var username = context.User?.FindFirst(c => c.Type == "UserName")?.Value;
+            if (username is null)  throw new UnauthorizedAccessException("Unauthorized!");
+            var role = context.User?.FindFirst(c => c.Type == ClaimTypes.Role)?.Value;
 
 
             if (role == "Admin")
             {
                 context.Succeed(requirement);
-
             }
-            else if (role == "User" && user.Email == "aizenit@email.com")
+            else if (role == "User" && username == "AizenitUser")
             {
                 context.Succeed(requirement);
             } 

@@ -6,7 +6,13 @@ namespace PizzaHome.API.Middlewares
 {
     public class ExceptionHandlingMiddleware : IMiddleware
     {
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+        {
+            _logger = logger;
+        }
+
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
             try
             { 
@@ -36,7 +42,13 @@ namespace PizzaHome.API.Middlewares
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
 
-                    default :
+                    case UnauthorizedAccessException e:
+
+                        errorResponse.Message = e.Message;
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+
+                    default:
 
                          if (ex.Message.Contains("IDX"))
                         {
@@ -51,6 +63,7 @@ namespace PizzaHome.API.Middlewares
 
                 }
 
+                _logger.LogError(1,ex,"Ërror");
                 var result = JsonSerializer.Serialize(errorResponse);
                 await response.WriteAsync(result);
 
