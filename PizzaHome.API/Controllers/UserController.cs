@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 using PizzaHome.API.Authorization;
 using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace PizzaHome.Controllers
 {

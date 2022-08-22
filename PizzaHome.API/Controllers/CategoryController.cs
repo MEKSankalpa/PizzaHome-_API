@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PizzaHome.API.Attributes;
 using PizzaHome.Core.Dtos;
 using PizzaHome.Core.Entities;
 using PizzaHome.Core.Interfaces;
@@ -46,16 +43,17 @@ namespace PizzaHome.Controllers
         }
 
         //Create category
-        [Authorize(Policy = "PizzaHomeManagementPolicy")]
+       
         [HttpPost]
+        [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<IActionResult> AddCategory(Category category) {
 
             var createdCategory =  await _service.Add(category);
             var mappedCategory = _mapper.Map<CategoryDto>(createdCategory);
             return CreatedAtRoute("GetCategoryById" , new { id = mappedCategory.Id }, mappedCategory);
         }
-       
 
+        [Authorize]
         [HttpPut("{id}")]
         [Authorize(Policy = "PizzaHomeManagementPolicy")]
         public async Task<ActionResult> UpdateCategory(int id, Category category) {
