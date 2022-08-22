@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.JwtAuthConfiguration(builder.Configuration["Jwt:Issuer"], builder.Configuration["Jwt:Audience"],builder.Configuration["Jwt:Key"]);
 builder.Services.CustomServices();
+builder.Services.ConfigureCORS();
 
 var app = builder.Build();
 
@@ -29,7 +30,7 @@ if (app.Environment.IsDevelopment())
 app.CustomMiddlewares();
 
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthentication();
 
 app.UseAuthorization();

@@ -65,5 +65,16 @@ namespace PizzaHome.API.Extensions
             });
 
         }
+
+        public static void ConfigureCORS(this IServiceCollection service) {
+
+            service.AddCors(o => o.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+        }
     }
 }
