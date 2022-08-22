@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 app.CustomMiddlewares();
 
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthentication();
 
 app.UseAuthorization();
