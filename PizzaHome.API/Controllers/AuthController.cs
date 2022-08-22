@@ -34,7 +34,7 @@ namespace PizzaHome.Controllers
             var mappedUser = _mapper.Map<User>(user);
 
             var userExits = _service.GetUserByName(mappedUser.UserName);
-            if (userExits != null) throw new ApplicationException("User Name Already Exists! Please Enter Another..");  
+            if (userExits.Result != null) throw new ApplicationException("User Name Already Exists! Please Enter Another..");  
 
             await _service.AddUser(mappedUser);
 
