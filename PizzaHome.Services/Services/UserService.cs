@@ -37,11 +37,11 @@ namespace PizzaHome.Services.Services
             return result;
         }
 
-        public async Task<User> GetUserByName(string name)
+        public async Task<User> GetUserByName(string email)
         {
 
-            var query = "SELECT * FROM public.users WHERE username = @name";
-            var user = await _service.Get<User>(query, new { name });
+            var query = "SELECT * FROM public.users WHERE email = @email";
+            var user = await _service.Get<User>(query, new { email });
 
             return user;
         }

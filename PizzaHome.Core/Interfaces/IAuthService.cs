@@ -9,8 +9,8 @@ namespace PizzaHome.Core.Interfaces
     public interface IAuthService
     {
     
-        public string GenerateAccessToken(string name, string role);
-        public string GenerateRefreshToken(string name, string role);
+        public string GenerateAccessToken(string email, string role);
+        public string GenerateRefreshToken(string email, string role);
         public object RegenerateTokens(string token);
     }
 }

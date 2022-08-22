@@ -33,13 +33,13 @@ namespace PizzaHome.Controllers
         {
             var mappedUser = _mapper.Map<User>(user);
 
-            var userExits = _service.GetUserByName(mappedUser.UserName);
-            if (userExits.Result != null) throw new ApplicationException("User Name Already Exists! Please Enter Another..");  
+            var userExits = _service.GetUserByName(mappedUser.Email);
+            if (userExits.Result != null) throw new ApplicationException("Email Already Exists! Please Enter Another..");  
 
             await _service.AddUser(mappedUser);
 
-            var accessToken = _authService.GenerateAccessToken(user.UserName, user.Role);
-            var refreshToken = _authService.GenerateRefreshToken(user.UserName, user.Role);
+            var accessToken = _authService.GenerateAccessToken(user.Email, user.Role);
+            var refreshToken = _authService.GenerateRefreshToken(user.Email, user.Role);
 
             return Ok(new { AccessToken = accessToken, RefreshToken = refreshToken });
         }
@@ -50,14 +50,14 @@ namespace PizzaHome.Controllers
         public async Task<ActionResult> UserAuthentication(LoginDto user)
         {
             var mappedUser = _mapper.Map<User>(user);
-            var result = await _service.GetUserByName(mappedUser.UserName);
+            var result = await _service.GetUserByName(mappedUser.Email);
             var mappedtoUserDto = _mapper.Map<UserDto>(result);
 
             if (result is null || !BCrypt.Net.BCrypt.Verify(mappedUser.Password, result.Password)) throw new ApplicationException("Check Your User Name and Password!");
            
 
-            var accesstoken  = _authService.GenerateAccessToken(user.UserName, mappedtoUserDto.Role);
-            var refreshtoken = _authService.GenerateRefreshToken(user.UserName, mappedtoUserDto.Role);
+            var accesstoken  = _authService.GenerateAccessToken(user.Email, mappedtoUserDto.Role);
+            var refreshtoken = _authService.GenerateRefreshToken(user.Email, mappedtoUserDto.Role);
 
             return Ok(new { AccessToken = accesstoken, RefreshToken = refreshtoken });
 

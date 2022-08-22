@@ -13,8 +13,8 @@ namespace PizzaHome.API.Attributes
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PizzaHomeManagementPolicy requirement)
         {
-            var username = context.User?.FindFirst(c => c.Type == "UserName")?.Value;
-            if (username is null)  throw new UnauthorizedAccessException("Unauthorized!");
+            var useremail = context.User?.FindFirst(c => c.Type == "UserEmail")?.Value;
+            if (useremail is null)  throw new UnauthorizedAccessException("Unauthorized!");
             var role = context.User?.FindFirst(c => c.Type == ClaimTypes.Role)?.Value;
 
 
@@ -22,7 +22,7 @@ namespace PizzaHome.API.Attributes
             {
                 context.Succeed(requirement);
             }
-            else if (role == "User" && username == "AizenitUser")
+            else if (role == "User" && useremail == "aizenit@gmail.com")
             {
                 context.Succeed(requirement);
             } 

@@ -23,7 +23,7 @@ namespace PizzaHome.Core.Entities
         [StringLength(10, MinimumLength = 5)]
         public string Password { get; set; } = string.Empty;
 
-        [Required]
+       
         public UserRole Role { get; set; } = UserRole.User; // Ither User or Admin
     }
 }
